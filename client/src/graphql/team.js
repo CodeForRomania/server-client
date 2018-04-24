@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export const meQuery = gql`
   {
@@ -21,7 +21,7 @@ export const meQuery = gql`
       }
     }
   }
-`;
+`
 
 export const getTeamMembersQuery = gql`
   query($teamId: Int!) {
@@ -30,4 +30,4 @@ export const getTeamMembersQuery = gql`
       username
     }
   }
-`;
+`

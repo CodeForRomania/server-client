@@ -1,54 +1,56 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import decode from 'jwt-decode';
+import React from 'react'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import decode from 'jwt-decode'
 
-import Home from './Home';
-import Register from './Register';
-import Login from './Login';
-import CreateTeam from './CreateTeam';
-import ViewTeam from './ViewTeam';
+import Home from './Home'
+import Register from './Register'
+import Login from './Login'
+import CreateTeam from './CreateTeam'
+import ViewTeam from './ViewTeam'
+import AdminHome from './AdminHome'
 
 const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
-  const refreshToken = localStorage.getItem('refreshToken');
+  const token = localStorage.getItem('token')
+  const refreshToken = localStorage.getItem('refreshToken')
   try {
-    decode(token);
-    const { exp } = decode(refreshToken);
+    decode(token)
+    const { exp } = decode(refreshToken)
     if (Date.now() / 1000 > exp) {
-      return false;
+      return false
     }
   } catch (err) {
-    return false;
+    return false
   }
 
-  return true;
-};
+  return true
+}
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      (isAuthenticated() ? (
+      isAuthenticated() ? (
         <Component {...props} />
       ) : (
         <Redirect
           to={{
-            pathname: '/login',
+            pathname: '/login'
           }}
         />
-      ))
+      )
     }
   />
-);
+)
 
 export default () => (
   <BrowserRouter>
     <Switch>
       <Route path="/" exact component={Home} />
+      <Route path="/admin/:activePage?" exact component={AdminHome} />
       <Route path="/register" exact component={Register} />
       <Route path="/login" exact component={Login} />
       <PrivateRoute path="/view-team/:teamId?/:channelId?" exact component={ViewTeam} />
       <PrivateRoute path="/create-team" exact component={CreateTeam} />
     </Switch>
   </BrowserRouter>
-);
+)
